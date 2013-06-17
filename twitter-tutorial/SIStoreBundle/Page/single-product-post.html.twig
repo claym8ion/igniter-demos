@@ -1,0 +1,163 @@
+{% extends 'SIStoreBundle::index.html.twig' %}
+
+{% set og_url = generate_og_url(collection) %}
+{% set component = page.component %}
+
+{% block title %}{{ parent() }} - {{ page.name }}{% endblock %}
+
+{% block header %}
+    <div class="clearfix">
+        {% if component.out_link is defined %}
+            <a href="{{ component.out_link.url }}" target="_blank" class="dotcom">{{ component.out_link.name }}</a>
+        {% endif %}
+    </div>
+
+    <header class="clearfix">
+        {% if component.featured_product is defined %}
+            <h1>{{ component.featured_product.product.name }}</a></h1>
+        {% endif %}
+    </header>
+{% endblock %}
+
+{% block meta %}
+    {{ parent() }}
+
+    <meta property="og:title" content="{{ page.og_title }}" />
+    <meta property="og:url" content="{{ og_url }}" />
+
+    {% if page.og_image_asset is defined %}
+        <meta property="og:image" content="{{ (asset_base_url ~ page.og_image_asset.file_path ~ '_m.' ~ page.og_image_asset.file_extension)|ensure_protocol }}" />
+    {% endif %}
+
+    {% if page.og_description %}
+        <meta property="og:description" content="{{ page.og_description }}" />
+    {% endif %}
+
+    <meta property="og:video" content="{{ instream.swf_url|ensure_protocol }}" />
+    <meta property="og:video:secure_url" content="{{ instream.swf_url|ensure_protocol('https') }}" />
+    {% if instream.video_width %}
+        <meta property="og:video:width" content="{{ instream.video_width }}" />
+    {% endif %}
+    {% if instream.video_height %}
+        <meta property="og:video:height" content="{{ instream.video_height }}" />
+    {% endif %}
+    {% if instream.video_type %}
+        <meta property="og:video:type" content="{{ instream.video_type }}" />
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    {# Use flexslider plugin if more than 1 slide exists #}
+    {% set slides = [] %}
+    {% for slug, slide in component if slug in ['first_image', 'second_image', 'third_image', 'video'] %}
+        {% if slug != 'third_image' or component.video is not defined %}
+            {% set slides = slides|merge([slide]) %}
+        {% endif %}
+    {% endfor %}
+
+    {% if slides|length > 1 %}
+        {# 2 PHOTOS, FOLLOWED BY VIDEO (OR PHOTO)  #}
+        <div class="flexslider">
+
+            <ul class="slides">
+                {% if component.first_image is defined %}
+                    {% set asset = component.first_image.asset %}
+                    <li>
+                        <div class="embed-container"><img src="{{ asset_base_url ~ asset.file_path ~ '_l.' ~ asset.file_extension }}" alt="{{ asset.name }}"></div>
+                    </li>
+                {% endif %}
+
+                {% if component.second_image is defined %}
+                    {% set asset = component.second_image.asset %}
+                    <li>
+                        <div class="embed-container"><img src="{{ asset_base_url ~ asset.file_path ~ '_l.' ~ asset.file_extension }}" alt="{{ asset.name }}"></div>
+                    </li>
+                {% endif %}
+
+                {% if component.video is defined %}
+                    <li class="video">
+                        <div class="embed-container">
+                            <iframe src="" width="640" height="360" frameborder="0"
+                                    webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                        </div>
+                    </li>
+                {% elseif component.third_image is defined %}
+                    {% set asset = component.third_image.asset %}
+                    <li>
+                        <div class="embed-container"><img src="{{ asset_base_url ~ asset.file_path ~ '_l.' ~ asset.file_extension }}" alt="{{ asset.name }}"></div>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="flexslider-nav">
+            <ul id="thumbnails" class="clearfix">
+
+                {% if component.first_image is defined %}
+                    {% set asset = component.first_image.asset %}
+                    <li class="thumb1"><a href="#"><img src="{{ asset_base_url ~ asset.file_path ~ '_m.' ~ asset.file_extension }}" alt="{{ asset.name }}"></a></li>
+                {% endif %}
+
+                {% if component.second_image is defined %}
+                    {% set asset = component.second_image.asset %}
+                    <li class="thumb2"><a href="#"><img src="{{ asset_base_url ~ asset.file_path ~ '_m.' ~ asset.file_extension }}" alt="{{ asset.name }}"></a></li>
+                {% endif %}
+
+                {% if component.video is defined %}
+                    {% set asset = component.video.asset %}
+                    <li class="thumb3 video" ><a href="#" data-video="{{ asset.url }}"><img src="" alt="{{ asset.name }}"></a></li>
+                {% elseif component.third_image is defined %}
+                    {% set asset = component.third_image.asset %}
+                    <li class="thumb3"><a href="#"><img src="{{ asset_base_url ~ asset.file_path ~ '_m.' ~ asset.file_extension }}" alt="{{ asset.name }}"></a></li>
+                {% endif %}
+            </ul>
+        </div>
+    {% elseif slides|length == 1 %}
+        {% if component.video is defined %}
+            {% set asset = component.video.asset %}
+                <div class="embed-container">
+                    <iframe data-video="{{ asset.url }}" src="" width="640" height="360" frameborder="0"
+                            webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                </div>
+            {% else %}
+                {% set asset = slides|first.asset %}
+                <div class="embed-container"><img src="{{ asset_base_url ~ asset.file_path ~ '_l.' ~ asset.file_extension }}" alt="{{ asset.name }}"></div>
+        {% endif %}
+    {% endif %}
+
+    {# IN-POST PRODUCT DETAIL #}
+
+    {% if component.featured_product is defined %}
+        <div id="mini-product-container" class="slider">
+            {% include "SIStoreBundle:Product:partial.html.twig" with { 'component': component } %}
+        </div>
+    {% endif %}
+
+
+
+{% endblock %}
+
+{% block footer %}
+
+    {# LINKS AND LABELS #}
+
+    <footer>
+        <nav>
+            <ul>
+                {% if component.first_link is defined %}
+                    <li><a href="{{ component.first_link.url }}" target="_blank">{{ component.first_link.name }}</a></li>
+                {% endif %}
+
+                {% if component.product_show_label is defined and component.featured_product is defined %}
+                    <li><a class="product-link" href="#">{{ component.product_show_label.contentblock.content }}</a></li>
+                {% endif %}
+
+                {% if component.second_link is defined %}
+                    <li><a href="{{ component.second_link.url }}" target="_blank">{{ component.second_link.name }}</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </footer>
+
+    <div class="overlay"></div>
+{% endblock %}

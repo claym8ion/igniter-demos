@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+    {% block meta %}
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width">
+        <meta property="og:site_name" content="{{ site_settings.name }}" />
+    {% endblock %}
+
+    <title>{% block title %}{{ site_settings.name }}{% endblock %}</title>
+
+    {% block styles %}
+        <link rel="stylesheet" href="{{ asset('css/styles.css' ) }}" />
+        <!--[if lte IE 8]>
+        <link rel="stylesheet" href="{{ asset('css/ie.css' ) }}" media="screen" />
+        <script src="{{ asset('js/lib/es5-shim.min.js') }}"></script>
+        <script src="{{ asset('js/lib/respond.min.js') }}"></script>
+        <![endif]-->
+        <!--[if IE 9]>
+        <link rel="stylesheet" href="{{ asset('css/ie9.css' ) }}" media="screen" />
+        <![endif]-->
+    {% endblock %}
+
+    <script src="{{ asset('js/lib/modernizr-2.5.3.min.js') }}"></script>
+</head>
+<body>
+<div id="container">
+    {% block header %}
+        <div class="dotcom clearfix"><a href="#" target="_blank">TO .COM &rarr;</a></div>
+        <header class="clearfix">
+            <h1>{{ site_settings.name }}</a></h1>
+        </header>
+    {% endblock %}
+
+    <div id="main">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    {% block footer %}
+    {% endblock %}
+</div>
+
+{% block scripts %}
+    <script>
+        window.pageData = window.pageData || {};
+        window.pageData.action = 'page_view';
+        window.pageData.collection = '{{ collection.slug }}';
+        window.pageData.cookie = '{{ collection.slug }}';
+        {% if app.user.id %}
+        window.pageData.uid = '{{ app.user.id }}';
+        {% endif %}
+        {% if app.debug %}
+        window.pageData.stream = 'trash';
+        {% endif %}
+
+        {# preload analytics actions to perform once lytics has been asynchronously loaded #}
+        jstag=function(e){var t=!1,n=window,r=document,i="/static/io",s=Array.prototype.slice,o=e.url||"";return n.jstag||{load:function(){var e,s=r.getElementsByTagName("script")[0];return t=!0,"JSON"in n&&Array.prototype.forEach||(i+="w"),r.getElementById(i)?this:(e=r.createElement("script"),e.id=i,e.src=o+i+".min.js",s.parentNode.insertBefore(e,s),this)},_q:[],_c:e,bind:function(e){this._q.push([e,s.call(arguments,1)])},ready:function(){this._q.push(["ready",s.call(arguments)])},send:function(){return t||this.load(),this._q.push(["ready","send",s.call(arguments)]),this},ts:(new Date).getTime()}
+        }({cid:"{{ lytics_cid }}",url:"{{ lytics_url }}"}).send(window.pageData);
+    </script>
+
+    <script src="{{ asset('//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/lib/widgets.min.js') }}"></script>
+
+    {% if app.debug %}
+        <script src="{{ asset('js/app.js') }}"></script>
+        <script>
+            // Append '/app_dev.php' to all AJAX urls when in dev environment
+            jQuery.ajaxPrefilter(function(options) {
+                if (options.url.indexOf('/') === 0) {
+                    options.url = '/app_dev.php' + options.url;
+                }
+            });
+        </script>
+    {% else %}
+        <script src="{{ asset('js/app.min.js') }}"></script>
+    {% endif %}
+{% endblock %}
+<div id="alert-container"></div>
+<div class="overlay"></div>
+</body>
+</html>

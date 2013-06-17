@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<background>background.jpg</background><!-- can be either a hex value, or image path -->
+	<header>
+		<headerLabel>Igniter Ministore</headerLabel>
+		<logo><![CDATA[logo.png]]></logo><!-- if logo is defined headerLabel will not appear -->
+		<!--Header gradient color values, comma-separated-->
+		<headerGradientColorValues>0xffffff,0xffffff</headerGradientColorValues>
+		<headerBorderColor>0xe3e3e3</headerBorderColor>
+	</header>
+	<buttonGradientColorValues>0xcccccc,0x999999</buttonGradientColorValues>
+		
+	<about>
+		<head><![CDATA[ InStream Offers]]></head>
+		<body><![CDATA[Take advantage of special deals on limited time offers and promotions only accessible to our Facebook fans.]]></body>
+	</about>
+	<lock>
+		<head><![CDATA[About Security]]></head>
+		<body><![CDATA[This in-stream checkout experience is fully secure and uses the latest 256-bit SSL encryption.]]></body>
+	</lock>
+	<footer>
+		<footerLink>http://facebook.com/ShopIgniter</footerLink>
+		<footerText>ShopIgniter, Inc.</footerText>
+		<brandedFooter>assets/brandedFooter.png</brandedFooter>
+	</footer>
+	<securityMessage>
+		Question is, how secure is it?
+	</securityMessage>
+</document>

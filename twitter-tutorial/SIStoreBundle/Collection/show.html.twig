@@ -1,0 +1,114 @@
+{% extends 'SIStoreBundle::index.html.twig' %}
+{% set og_url = generate_og_url(collection) %}
+
+{% block title %}{{ collection.name }}{% endblock %}
+
+{% block meta %}
+{{ parent() }}
+<meta property="og:url" content="{{ og_url }}" />
+<meta property="og:title" content="{{ collection.name }}" />
+<meta property="og:type" content="product" />
+<meta property="og:video" content="{{ instream.swf_url|ensure_protocol }}" />
+<meta property="og:video:secure_url" content="{{ instream.swf_url|ensure_protocol('https') }}" />
+<meta property="og:video:height" content="{{ instream.video_width }}" />
+<meta property="og:video:width" content="{{ instream.video_height }}" />
+<meta property="og:video:type" content="{{ instream.video_type }}" />
+{% endblock %}
+
+{% block content %}
+
+
+<div id="collection-container">
+  {% if is_early %}
+      {% if prelaunch_description is not empty %}
+      <p>{{ prelaunch_description }}</p>
+      {% else %}
+      <p>Sorry, but this collection hasn't started yet! Come back {{ collection.start|date("F jS, Y @ ga", store_timezone) }}.</p>
+      {% endif %}
+  {% elseif is_over %}
+      {% if postend_description is not empty %}
+      <p>{{ postend_description }}</p>
+      {% else %}
+      <p>This collection ended {{ collection.end|date("F jS, Y @ ga", store_timezone) }}. Sad face. :(</p>
+      {% endif %}
+  {% else %}
+  
+  	{% if collection.description is not empty %}
+  		{{ collection_description|raw }}
+    {% endif %}
+  
+  {% endif %}
+    
+</div>
+
+{% if not (is_early or is_over) %}
+<div id="mini-product-container" class="slider">
+	{% render "SIStoreBundle:Product:list" with { 'collection_uri': collection.uri, 'tag_slugs': '', 'from_collection': true } %}
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+{{ parent() }}
+<script>
+      	//Load player api asynchronously.
+		    var tag = document.createElement('script');
+		    tag.src = "//www.youtube.com/player_api";
+		    var firstScriptTag = document.getElementsByTagName('script')[0];
+		    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+		    var done = false;
+		    var player1;
+		    function onYouTubePlayerAPIReady() {
+		    		var player1Id = 'player1';
+		    		var player1VideoId = $('#'+player1Id).data('youtube');
+		        player1 = new YT.Player(player1Id, {
+		          height: '360',
+		          width: '640',
+		          playerVars: { 
+		          	rel: 0,
+		          	showinfo: 0,
+		          	'wmode': 'opaque'
+		          },
+		          showinfo: 0,
+		          videoId: player1VideoId
+		        });
+		    }
+		    
+			  // flexslider init after youtube videos have been loaded
+			  $(".flexslider").flexslider({
+			      animation: "slide",
+			      animationSpeed: 200,
+			      animationLoop: false,
+			      directionNav: false,
+				    controlsContainer: ".flexslider-nav",
+				    controlNav: true,
+				    manualControls: "ul#thumbnails li a",
+			      useCSS: false,
+			      smoothHeight: true,
+			      slideshow: false,
+			      startAt: 3,
+			      touch: false,
+					  before: 
+						  function(){
+						  	if(player1.getPlayerState() == 1){
+						    	player1.pauseVideo();
+						    }
+						  }
+			  });
+
+			  $('ul#thumbnails li.video a').prepend('<span class="play"></span>');
+			  
+		</script>
+{% endblock %}
+
+{# Add collection analytics data #}
+{# NOTE: collection slug is hard coded in index template for now #}
+{#{% block scripts %}#}
+{#<script>#}
+  {#window.pageData = {#}
+    {#collection: '{{ collection.slug }}'#}
+  {#}#}
+{#</script>#}
+{#{{ parent() }}#}
+{#{% endblock %}#}

@@ -1,0 +1,145 @@
+{% extends 'SIStoreBundle::index.html.twig' %}
+
+{% set og_url = generate_og_url(collection) %}
+{% set component = page.component %}
+
+{% block title %}{{ parent() }} - {{ page.name }}{% endblock %}
+
+{% block header %}
+    <div class="clearfix">
+        {% if component.out_link is defined %}
+            <a href="{{ component.out_link.url }}" target="_blank" class="dotcom">{{ component.out_link.name }}</a>
+        {% endif %}
+    </div>
+
+    <header class="clearfix">
+        <h1>{{ page.name }}</h1>
+    </header>
+{% endblock %}
+
+{% block meta %}
+    {{ parent() }}
+
+    <meta property="og:title" content="{{ page.og_title }}" />
+    <meta property="og:url" content="{{ og_url }}" />
+
+    {% if page.og_image_asset is defined %}
+        <meta property="og:image" content="{{ (asset_base_url ~ page.og_image_asset.file_path ~ '_m.' ~ page.og_image_asset.file_extension)|ensure_protocol }}" />
+    {% endif %}
+
+    {% if page.og_description %}
+        <meta property="og:description" content="{{ page.og_description }}" />
+    {% endif %}
+
+    {% if instream.swf_url %}
+        <meta property="og:video" content="{{ instream.swf_url|ensure_protocol }}" />
+        <meta property="og:video:secure_url" content="{{ instream.swf_url|ensure_protocol('https') }}" />
+    {% endif %}
+
+    {% if instream.video_width %}
+        <meta property="og:video:width" content="{{ instream.video_width }}" />
+    {% endif %}
+    {% if instream.video_height %}
+        <meta property="og:video:height" content="{{ instream.video_height }}" />
+    {% endif %}
+    {% if instream.video_type %}
+        <meta property="og:video:type" content="{{ instream.video_type }}" />
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    {# VIDEO #}
+    {% if component.video is defined %}
+        {% set asset = component.video.asset %}
+        <div class="embed-container">
+            <iframe data-video="{{ asset.url }}" src="" width="640" height="360" frameborder="0"
+                    webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+        </div>
+    {% endif %}
+
+    {# BUTTON TO GO TO NEXT SLIDE #}
+    {%  if component.call_to_action_text is defined %}
+        <div id="action">
+            <a class="signup" href="#">{{ component.call_to_action_text.contentblock.content }}</a>
+        </div>
+    {% endif %}
+
+    <div id="slider">
+        <div class="before">
+            <a class="close" href="#">Close</a>
+
+            {# COPY TEXT #}
+            {% if component.copy_text is defined %}
+                <div id="details">
+                    {{ component.copy_text.contentblock.content|raw }}
+                </div>
+            {% endif %}
+
+            <form id="lead-gen-form" action="/collector" method="POST">
+
+                {# FORM FIELDS, FIRST REQUIRED #}
+                <div id="form-field-1">
+                    <input type="text" id="form_field_1" name="form_field_1"
+                            {% if component.form_field_1 is defined %}
+                               placeholder="{{ component.form_field_1.contentblock.content }}"
+                               data-placeholder-text="{{ component.form_field_1.contentblock.content }}"
+                            {% endif %}
+                    >
+                </div>
+                {% if component.form_field_2 is defined %}
+                    <div id="form-field-2">
+                        <input type="text" id="form_field_2" name="form_field_2"
+                              placeholder="{{ component.form_field_2.contentblock.content }}"
+                              data-placeholder-text="{{ component.form_field_2.contentblock.content }}">
+                    </div>
+                {% endif %}
+                {% if component.form_field_3 is defined %}
+                    <div id="form-field-3">
+                        <input type="text" id="form_field_3" name="form_field_3"
+                               placeholder="{{ component.form_field_3.contentblock.content }}"
+                               data-placeholder-text="{{ component.form_field_3.contentblock.content }}">
+                    </div>
+                {% endif %}
+                {% if component.form_field_4 is defined %}
+                    <div id="form-field-4">
+                        <input type="text" id="form_field_4" name="form_field_4"
+                               placeholder="{{ component.form_field_4.contentblock.content }}"
+                               data-placeholder-text="{{ component.form_field_4.contentblock.content }}">
+                    </div>
+                {% endif %}
+
+                <input type="hidden" name="container" value="leadgen">
+
+                {% set form_field_map = {} %}
+                {% set form_field_slugs = ['form_field_1', 'form_field_2', 'form_field_3', 'form_field_4'] %}
+                {% for slug, field in component if slug in form_field_slugs %}
+                    {% set form_field_map = form_field_map|merge({ (slug): field.contentblock.content }) %}
+                {% endfor %}
+
+                <input type="hidden" name="fields" value="{{ form_field_map|json_encode }}">
+
+                {# SUBMIT THAT SHIT #}
+                <a class="submit" href="#">Submit</a>
+
+            </form>
+
+            {# PRIVACY LINK #}
+            {%  if component.privacy_link is defined %}
+                <a class="privacy" href="{{ component.privacy_link.url }}">{{ component.privacy_link.name }}</a>
+            {% endif %}
+        </div>
+        <div class="after">
+            <a class="close" href="#">Close</a>
+            <p><strong>Success</strong></p>
+            {%  if component.optional_link is defined %}
+                <p><a href="{{ component.optional_link.url }}">{{ component.optional_link.name }}</a></p>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+    <div class="overlay"></div>
+{% endblock %}

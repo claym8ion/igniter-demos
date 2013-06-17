@@ -1,0 +1,7 @@
+{# All published collections provided. By default, just render the oldest collection. #}
+{% if not collections|length %}
+  {# this should be handled better on a client theme #}
+  No published experiences to show.
+{% else %}
+  {% render "SIStoreBundle:Collection:show" with { 'uri': collections[0].uri } %}
+{% endif %}

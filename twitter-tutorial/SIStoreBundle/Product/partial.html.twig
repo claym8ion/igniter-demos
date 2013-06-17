@@ -1,0 +1,51 @@
+{% set product = component.featured_product.product %}
+{% set primary_image = product.image|min('sort') %}
+
+
+<div class="product-close"></div>
+
+<div id="product-detail" class="product" data-context-id="{{ collection.id }}" data-ref-id="{{ product.id }}">
+    <div class="clearfix">
+        <div class="item-photos grid-row clearfix">
+            <div class="main-image image-gallery-target">
+                {% if primary_image.asset is not empty %}
+                    <img src="{{ asset_base_url ~ primary_image.asset.file_path ~ '_l.' ~ primary_image.asset.file_extension }}" alt="{{ primary_image.asset.name }}" />
+                {% else %}
+                    <img src="{{ asset('images/default.png') }}" />
+                {% endif %}
+                <div class="image-loading-target"></div>
+            </div>
+        </div>
+        <div class="item-info first clearfix">
+            <div class="item-meta clearfix">
+                <h1>{{ product.name }}</h1>
+
+                {% set short_description = product.description|find('type_key', 'short') %}
+                {% if short_description is not empty %}
+                    <div class="short-description">
+                        <div>{{ short_description.content|raw }}</div>
+                    </div>
+                {% endif %}
+
+                <div class="pricing-wrapper">
+                    {% include "SIStoreBundle:Product:pricing.html.twig" with { 'collection': collection, 'product': product } %}
+                </div>
+            </div>
+        </div>
+        <div class="item-info two">
+
+            {% set long_description = product.description|find('type_key', 'long') %}
+            {% if long_description is not empty %}
+                <div class="long-description">
+                    <div>{{ long_description.content|raw }}</div>
+                </div>
+            {% endif %}
+
+            <div class="prod-purchase clearfix">
+                <div class="actions-buy">
+                    <a href="{{ component.buy_link.url }}" class="btn add-product">{{ component.buy_link.name }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

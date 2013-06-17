@@ -1,0 +1,22 @@
+{% extends 'SIStoreBundle::index.html.twig' %}
+
+{% block title %}
+    {{ parent() }} - Products with tags:
+    {% for tag in tags %}
+        {{ tag.name }}
+    {% endfor %}
+{% endblock%}
+
+{% block content %}
+    <h1>{{ collection.name }}</h1>
+
+    <h2>Tags:</h2>
+    <ul>
+        {% for tag in tags %}
+        <li>{{ tag.name }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Products:</h2>
+    {% render "SIStoreBundle:Product:list" with { 'collection_uri': collection.uri, 'tag_slugs': tags|values_for('slug')|join('/'), 'from_collection': true } %}
+{% endblock %}

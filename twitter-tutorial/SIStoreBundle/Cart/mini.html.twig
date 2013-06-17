@@ -1,0 +1,12 @@
+<a class="dropdown-toggle" data-toggle="dropdown" href="#cart-dropdown">Your Cart (<span class="cart-count">{{ cart.item_count }}</span>)</a>
+<ul class="dropdown-menu">
+{% if cart.id and cart.items|length > 0 %}
+  <li><a href="{{ path('cart') }}" class="btn btn-primary">Proceed to Checkout</a></li>
+  <li><ul id="cart-items"></ul></li>
+  <li><a href="#cart-dropdown" data-toggle="dropdown" class="btn">Continue Shopping</a></li>
+{% elseif cart.items|length == 0 %}
+  <li>Your cart is empty.</li>
+{% else %}
+  <li>Cart unavailable.</li>
+{% endif %}
+</ul>

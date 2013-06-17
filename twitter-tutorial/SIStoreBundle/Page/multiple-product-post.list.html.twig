@@ -1,0 +1,28 @@
+{# PRODUCT LIST #}
+<div id="alternate-mini-product-container" class="slider">
+
+    <div class="product-close">Close</div>
+
+    <div class="grid-view clearfix alternate-grid-row">
+
+        {% set max_product_count = 9 %}
+        {% for i in 0..max_product_count %}
+
+            {# E.g., component.product_1, component.product_2, etc #}
+            {% if attribute(component, 'product_' ~ i) is defined %}
+
+                {% set product = attribute(component, 'product_' ~ i).product %}
+                {% set asset = product.image|min('sort').asset %}
+
+                <div class="product">
+                    <div class="grid">
+                        <a href="{{ path('page_show', {'collection_uri': collection.uri, 'page_uri': page.uri, 'product_slug': product.slug}) }}" title="view detailed info on {{ product.name }}">
+                            <img src="{{ asset_base_url ~ asset.file_path ~ '_t.' ~ asset.file_extension }}" alt="{{ asset.name }}">
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+</div>
