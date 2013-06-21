@@ -254,3 +254,41 @@ pagesets:
                 contents:
                     - name: Copy Text
                       slug: copy_text
+
+    - name: Twitter Lead Generation Post
+      slug: twitter-lead-generation-post
+      pages:
+          - name: Twitter Lead Generation Post Page
+            slug: twitter lead-generation-post
+            type: landing page
+            metadata:
+                - og_title
+                - og_description
+                - og_image
+            components:
+                videos:
+                    - name: Featured Video
+                      slug: video
+                labels:
+                    - name: Call to Action Text
+                      slug: call_to_action_text
+                formfields:
+                    - name: Form Field 1
+                      slug: form_field_1
+                    - name: Form Field 2
+                      slug: form_field_2
+                    - name: Form Field 3
+                      slug: form_field_3
+                    - name: Form Field 4
+                      slug: form_field_4
+                links:
+                    - name: Privacy Link
+                      slug: privacy_link
+                    - name: Optional Link
+                      slug: optional_link
+                    - name: Out Link
+                      slug: out_link
+                contents:
+                    - name: Copy Text
+                      slug: copy_text
+
