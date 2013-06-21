@@ -259,7 +259,7 @@ pagesets:
       slug: twitter-lead-generation-post
       pages:
           - name: Twitter Lead Generation Post Page
-            slug: twitter lead-generation-post
+            slug: twitter-lead-generation-post
             type: landing page
             metadata:
                 - og_title
