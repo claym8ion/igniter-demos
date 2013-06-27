@@ -9,12 +9,13 @@
     <div class="clearfix">
         {% if component.out_link is defined %}
             <a href="{{ component.out_link.url }}" target="_blank" class="dotcom">{{ component.out_link.name }}</a>
+            Noticeable Change
         {% endif %}
     </div>
 
     {# HEADER TEXT #}
     {% if component.header_text is defined %}
-        <div id="headercontent" class="clearfix">
+        <div id="headercontent">
             {{ component.header_text.contentblock.content|raw }}
         </div>
     {% endif %}
