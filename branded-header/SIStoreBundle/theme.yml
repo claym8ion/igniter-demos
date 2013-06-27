@@ -1,0 +1,258 @@
+theme_name: BrandedHeader
+theme_slug: brandedheader
+theme_tags:
+    - Brand Awareness
+    - Lead Generation
+pagesets:
+    - name: Single Product Post
+      slug: single-product-post
+      pages:
+        - name: Single Product Post Page
+          slug: single-product-post
+          type: landing page
+          metadata:
+            - og_title
+            - og_description
+            - og_image
+          components:
+            products:
+              - name: Featured Product
+                slug: featured_product
+            images:
+              - name: First Image
+                slug: first_image
+              - name: Second Image
+                slug: second_image
+              - name: Third Image
+                slug: third_image
+            videos:
+              - name: Featured Video
+                slug: video
+            labels:
+              - name: Product Show Label
+                slug: product_show_label
+            links:
+              - name: Bottom Left Link
+                slug: first_link
+              - name: Bottom Right Link
+                slug: second_link
+              - name: Buy Button Link
+                slug: buy_link
+              - name: Out Link
+                slug: out_link
+
+
+    # New Twitter Player Card
+    - name: Twitter Product Post
+      slug: twitter-product-post
+      pages:
+        - name: Twitter Product Post Page
+          slug: twitter-product-post
+          type: landing page
+          metadata:
+            - og_title
+            - og_description
+            - og_image
+          components:
+            products:
+              - name: Featured Product
+                slug: featured_product
+            images:
+              - name: First Image
+                slug: first_image
+              - name: Second Image
+                slug: second_image
+              - name: Third Image
+                slug: third_image
+            videos:
+              - name: Featured Video
+                slug: video
+            labels:
+              - name: Product Show Label
+                slug: product_show_label
+            links:
+              - name: Bottom Left Link
+                slug: first_link
+              - name: Bottom Right Link
+                slug: second_link
+              - name: Buy Button Link
+                slug: buy_link
+              - name: Out Link
+                slug: out_link
+ 
+
+    - name: Multiple Product Post
+      slug: multiple-product-post
+      pages:
+          - name: Product List Page
+            slug: multiple-product-post
+            type: landing page
+            metadata:
+                - og_title
+                - og_description
+                - og_image
+            components:
+                products:
+                    - name: Product 1
+                      slug: product_1
+                    - name: Product 2
+                      slug: product_2
+                    - name: Product 3
+                      slug: product_3
+                    - name: Product 4
+                      slug: product_4
+                    - name: Product 5
+                      slug: product_5
+                    - name: Product 6
+                      slug: product_6
+                    - name: Product 7
+                      slug: product_7
+                    - name: Product 8
+                      slug: product_8
+                    - name: Product 9
+                      slug: product_9
+                videos:
+                    - name: Featured Video
+                      slug: video
+                labels:
+                    - name: Collection Show Label
+                      slug: collection_show_label
+                    - name: Back to Collection Label
+                      slug: back_label
+                links:
+                    - name: Out Link
+                      slug: out_link
+                    - name: Buy Button Link
+                      slug: buy_link
+                    - name: Bottom Link
+                      slug: bottom_link
+
+    - name: Video Player Post
+      slug: video-player-post
+      pages:
+          - name: Video Player Post Page
+            slug: video-player-post
+            type: landing page
+            metadata:
+                - og_title
+                - og_description
+                - og_image
+            components:
+                videos:
+                    - name: First Video
+                      slug: first_video
+                    - name: Second Video
+                      slug: second_video
+                    - name: Third Video
+                      slug: third_video
+                links:
+                    - name: Call To Action Link
+                      slug: action_link
+                    - name: Out Link
+                      slug: out_link
+
+    - name: Social Proof Post
+      slug: social-proof-post
+      pages:
+          - name: Social Proof Post Page
+            slug: social-proof-post
+            type: landing page
+            metadata:
+                - og_title
+                - og_description
+                - og_image
+            components:
+                videos:
+                    - name: Featured Video
+                      slug: video
+                hashtags:
+                    - name: Feed Hashtag
+                      slug: hashtag
+                labels:
+                    - name: Show Feed Label
+                      slug: show_feed_label
+                contents:
+                    - name: Campaign Text
+                      slug: campaign_text
+                links:
+                    - name: Out Link
+                      slug: out_link
+
+    - name: Social Share Post
+      slug: social-share-post
+      pages:
+          - name: Social Share Post Page
+            slug: social-share-post
+            type: landing page
+            metadata:
+                - og_title
+                - og_description
+                - og_image
+            components:
+                images:
+                  - name: First Image
+                    slug: first_image
+                  - name: Second Image
+                    slug: second_image
+                  - name: Third Image
+                    slug: third_image
+                videos:
+                    - name: First Video
+                      slug: first_video
+                    - name: Second Video
+                      slug: second_video
+                    - name: Third Video
+                      slug: third_video
+                labels:
+                    - name: Share Button Label
+                      slug: share_label
+                links:
+                    - name: Out Link
+                      slug: out_link
+                    - name: Share Link
+                      slug: share_link
+                shares:
+                    - name: Share
+                      slug: share
+                contents:
+                    - name: Campaign Text
+                      slug: campaign_text
+
+    - name: Lead Generation Post
+      slug: lead-generation-post
+      pages:
+          - name: Lead Generation Post Page
+            slug: lead-generation-post
+            type: landing page
+            metadata:
+                - og_title
+                - og_description
+                - og_image
+            components:
+                videos:
+                    - name: Featured Video
+                      slug: video
+                labels:
+                    - name: Call to Action Text
+                      slug: call_to_action_text
+                formfields:
+                    - name: Form Field 1
+                      slug: form_field_1
+                    - name: Form Field 2
+                      slug: form_field_2
+                    - name: Form Field 3
+                      slug: form_field_3
+                    - name: Form Field 4
+                      slug: form_field_4
+                links:
+                    - name: Privacy Link
+                      slug: privacy_link
+                    - name: Optional Link
+                      slug: optional_link
+                    - name: Out Link
+                      slug: out_link
+                contents:
+                    - name: Header Text
+                      slug: header_text
+                    - name: Copy Text
+                      slug: copy_text

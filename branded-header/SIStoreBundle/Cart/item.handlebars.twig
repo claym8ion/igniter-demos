@@ -1,0 +1,23 @@
+{% raw %}
+<li class="partial">
+  <ul class="product" data-ref-id="{{id}}">
+    <li class="product-image">
+      <a href="{{product_uri}}" title="view detailed info on {{name}}">
+        {{#if asset}}
+        <img class="left" height="60" width="60" src="{% endraw %}{{ asset_base_url }}{% raw %}{{asset.file_path}}_t.{{asset.file_extension}}">
+        {{else}}}
+        <img class="left" height="60" width="60" src="/images/not_found.png">
+        {{/if}}
+      </a>
+    </li>
+    <li class="product-name">
+      <h3><a href="{{product_uri}}" title="view detailed info on {{name}}" class="alt-color">{{name}}</a></h3>
+    </li>
+    {{#if variant}}
+    <li class="product-variant">{{variant}}</li>
+    {{/if}}
+    <li class="product-quantity">Quantity: {{quantity}}</li>
+    <li class="product-price">${{price}}</li>
+  </ul>
+</li>
+{% endraw %}

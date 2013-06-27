@@ -1,0 +1,115 @@
+{% extends 'SIStoreBundle::index.html.twig' %}
+
+{% set og_url = generate_og_url(collection) %}
+{% set component = page.component %}
+{% set product = component|values_for('product')|find('slug', product_slug) %}
+
+{% block title %}{{ parent() }} - {{ page.name }}{% endblock %}
+
+{% block header %}
+    <div class="clearfix">
+
+        {% if component.back_label is defined %}
+            <a href="{{ path('page_show', {'collection_uri': collection.uri, 'page_uri': page.uri}) }}" class="back">{{ component.back_label.contentblock.content }}</a>
+        {% endif %}
+
+        {% if component.out_link is defined %}
+            <a href="{{ component.out_link.url }}" class="dotcom" target="_blank">{{ component.out_link.name }}</a>
+        {% endif %}
+    </div>
+
+    <header class="clearfix">
+        <h1>{{ page.name }}</a></h1>
+    </header>
+{% endblock %}
+
+{% block meta %}
+    {{ parent() }}
+
+    <meta property="og:title" content="{{ page.og_title }}" />
+    <meta property="og:url" content="{{ og_url }}" />
+
+    {% if page.og_image_asset is defined %}
+        <meta property="og:image" content="{{ (asset_base_url ~ page.og_image_asset.file_path ~ '_m.' ~ page.og_image_asset.file_extension)|ensure_protocol }}" />
+    {% endif %}
+
+    {% if page.og_description %}
+        <meta property="og:description" content="{{ page.og_description }}" />
+    {% endif %}
+
+    <meta property="og:video" content="{{ instream.swf_url|ensure_protocol }}" />
+    <meta property="og:video:secure_url" content="{{ instream.swf_url|ensure_protocol('https') }}" />
+    {% if instream.video_width %}
+        <meta property="og:video:width" content="{{ instream.video_width }}" />
+    {% endif %}
+    {% if instream.video_height %}
+        <meta property="og:video:height" content="{{ instream.video_height }}" />
+    {% endif %}
+    {% if instream.video_type %}
+        <meta property="og:video:type" content="{{ instream.video_type }}" />
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    {# PRODUCT LIST #}
+    {% include "SIStoreBundle:Page:multiple-product-post.list.html.twig" with { 'collection': collection, 'page': page } %}
+
+    {# PRODUCT DETAIL #}
+    <div id="alternate-product-detail" class="product">
+
+        <a class="view-collection" href="#">GRID</a>
+
+        <div class="clearfix">
+            <div class="item-photos grid-row clearfix">
+
+                {% set images = product.image|usort('sort') %}
+
+                <div class="main-image image-gallery-target">
+                {% if images[0] is defined %}
+                    {% set asset = images[0].asset %}
+                    <img src="{{ asset_base_url ~ asset.file_path ~ '_l.' ~ asset.file_extension }}" alt="{{ asset.name }}">
+                {% endif %}
+                </div>
+
+                <div class="gallery active-gallery image-gallery clearfix">
+                    {% set max_image_count = 3 %}
+                    {% for i in 0..max_image_count %}
+                        {% if images[i] is defined %}
+
+                            {% set asset = images[i].asset %}
+                            <a href="{{ asset_base_url ~ asset.file_path ~ '_l.' ~ asset.file_extension }}">
+                                <img src="{{ asset_base_url ~ asset.file_path ~ '_t.' ~ asset.file_extension }}" alt="{{ asset.name }}">
+                            </a>
+
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="item-info">
+                <h2>{{ product.name }}</h2>
+                <div class="pricing-wrapper">
+                    {% include "SIStoreBundle:Product:pricing.html.twig" with { 'collection': collection, 'product': product } %}
+                </div>
+                <a href="{{ component.buy_link.url }}" class="button">{{ component.buy_link.name }}</a>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+    <footer class="clearfix">
+        <nav>
+            <ul>
+                {% if component.bottom_link is defined %}
+                    <li><a href="{{ component.bottom_link.url }}" target="_blank">{{ component.bottom_link.name }}</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </footer>
+
+    <div class="overlay"></div>
+{% endblock %}

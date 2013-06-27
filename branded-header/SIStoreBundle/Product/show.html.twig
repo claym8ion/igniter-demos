@@ -1,0 +1,245 @@
+{% extends 'SIStoreBundle::index.html.twig' %}
+
+{# set vars for convenience #}
+{% set short_description = product.description|find('type_key', 'short-description') %}
+{% set primary_image = product.image|min('sort') %}
+{% set property_value = '' %}
+{% set cart_uri = path('cart') != app.request.server.get('REQUEST_URI') ? path('cart') : '#' %}
+{% set home_url = path('landing_page') %}
+{% set last_route = app.session.get('last_route') %}
+{% set og_url = generate_og_url(collection, product) %}
+
+{% set properties = [] %}
+{% for variant in product.variant %}
+    {% for property_value in variant.property_value %}
+        {% if property_value.property not in properties %}
+            {% set properties = properties|merge([property_value.property]) %}
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+
+{% set sanitized_variants = [] %}
+{% for variant in product.variant %}
+    {% set property_values = {} %}
+    {% for property_value in variant.property_value %}
+        {% set property_values = property_values|merge({(property_value.property.property_key):property_value.property_value}) %}
+    {% endfor %}
+    {% set sanitized_variant = {
+    id: variant.id,
+    sku: variant.sku,
+    price: variant.price,
+    salePrice: variant.sale_price,
+    inventoryCount: variant.inventory_count,
+    isOrderable: variant.is_orderable,
+    propertyValues: property_values } %}
+    {% set sanitized_variants = sanitized_variants|merge([sanitized_variant]) %}
+{% endfor %}
+
+{% block title %}{{ parent() }} - {{ product.name }}{% endblock %}
+
+{% block meta %}
+    {{ parent() }}
+    <meta property="og:url" content="{{ og_url }}" />
+    <meta property="og:title" content="{{ product.name }}" />
+    <meta property="og:type" content="{{ facebook_namespace }}:product" />
+
+    {% if primary_image.asset is not empty %}
+        <meta property="og:image" content="{{ (asset_base_url ~ primary_image.asset.file_path ~ '_l.' ~ primary_image.asset.file_extension)|ensure_protocol }}" />
+    {% endif %}
+
+    {% if short_description is not empty %}
+        <meta property="og:description" content="{{ short_description.content }}" />
+    {% endif %}
+
+    <meta property="og:video" content="{{ instream.swf_url|ensure_protocol }}" />
+    <meta property="og:video:secure_url" content="{{ instream.swf_url|ensure_protocol('https') }}" />
+    <meta property="og:video:height" content="{{ instream.video_width }}" />
+    <meta property="og:video:width" content="{{ instream.video_height }}" />
+    <meta property="og:video:type" content="{{ instream.video_type }}" />
+{% endblock %}
+
+{% block content %}
+
+    <div id="product-detail" class="product" data-context-id="{{ collection.id }}" data-ref-id="{{ product.id }}" data-variants="{{ sanitized_variants|json_encode }}" data-variant-id="{% if product.variant|length == 1 %}{{ product.variant|first.id }}{% endif %}">
+        {#<a href="{{ path(last_route.name, last_route.params) }}" class="back">&lt; back</a>#}
+        <a href="{{ home_url }}" class="back">&lt; back</a>
+        <h1>{{ product.name }}</h1>
+        <div class="clearfix">
+            <div class="item-photos grid-row clearfix">
+                <div class="main-image image-gallery-target">
+                    {% if primary_image.asset is not empty %}
+                        <img src="{{ asset_base_url ~ primary_image.asset.file_path ~ '_l.' ~ primary_image.asset.file_extension }}" alt="{{ primary_image.asset.name }}" />
+                    {% else %}
+                        <img src="{{ asset('images/default.png') }}" />
+                    {% endif %}
+                    <div class="image-loading-target"></div>
+                </div>
+
+                {% if product.image|length > 1 %}
+                    <div class="gallery active-gallery image-gallery clearfix">
+                        {% for image in product.image|usort('sort') %}
+                            {% if image.asset is not empty %}
+                                <a href="{{ asset_base_url ~ image.asset.file_path ~ '.' ~ image.asset.file_extension }}">
+                                    <img src="{{ asset_base_url ~ image.asset.file_path ~ '_t.' ~ image.asset.file_extension }}" alt="{{ image.asset.name }}" />
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {# option asset galleries hidden for JavaScript swapping #}
+                {% for variant in product.variant %}
+                    {% for property_value in variant.property_value %}
+                        {% if property_value.image is defined %}
+                            <div id="property-value-gallery-{{ property_value.id }}" class="gallery image-gallery clearfix" style="display:none;">
+                                {% for image in property_value.image|usort('sort') %}
+                                    {% if image.asset is not empty %}
+                                        <a href="{{ asset_base_url ~ image.asset.file_path ~ '.' ~ image.asset.file_extension }}">
+                                            <img src="{{ asset_base_url ~ image.asset.file_path ~ '_t.' ~ image.asset.file_extension }}" alt="{{ image.asset.name }}" />
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <div class="item-info clearfix">
+                <div class="item-meta clearfix">
+                    <div class="pricing-wrapper">{% include "SIStoreBundle:Product:pricing.html.twig" with { 'collection': collection, 'product': product } %}</div>
+                    {% if product.description|length > 1 %}
+                        <div class="prod-descriptions">
+                            {% for description in product.description %}
+                                {% if description.type_key != 'short-description' or 'instream-description' %}
+                                    <div class="prod-description-wrapper clear ui-tabs-hide">
+                                        <div>{{ description.content|raw }}</div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                </div>
+                <div class="prod-info">
+                    <ul class="vertical-list">
+                        <li><div class="stock-wrapper">{% if product.variant|values_for('inventory_count')|sum > 0 %}In stock{% else %}Out of stock{% endif %}</div> | Stock: <span class="prod-stock" data-total-stock="{{ product.variant|values_for('inventory_count')|sum }}">{{ product.variant|values_for('inventory_count')|sum }}</span></li>
+                        <li class="prod-quantity">Quantity <input type="text" name="quantity" value="1"></li>
+
+                        {% for property in properties %}
+                            <li class="prod-property clearfix" data-key="{{ property.property_key }}" data-name="{{ property.name }}">
+                                <div class="prod-property-values prod-property-swatches clearfix" data-index="{{ loop.index0 }}" data-name="property[{{ property.property_key }}]" data-product-action="property-select">
+                                    {% set printed_property_values = [] %}
+                                    {% for variant in product.variant %}
+                                    {% for property_value in variant.property_value %}
+                                    {% if property_value.property.property_key == property.property_key and property_value.property_value not in printed_property_values %}
+                                    {% set printed_property_values = printed_property_values|merge([property_value.property_value]) %}
+                                    {% if property_value.image is not empty and property_value.image[0].asset is not empty %}
+                                    {% set prop_image = property_value.image[0] %}
+                                    <a href="{{ asset_base_url ~ prop_image.asset.file_path ~ '.' ~ prop_image.asset.file_extension }}" title="{{ property_value.name }}" data-value="{{ property_value.property_value }}">
+                                        {% else %}
+                                        <a href="#" title="{{ property_value.name }}" data-value="{{ property_value.property_value }}">
+                                            {% endif %}
+                                            {% if property_value.swatch is not empty %}
+                                                {% set swatch_image = property_value.swatch[0] %}
+                                                {% if swatch_image.asset is not empty %}
+                                                    <img src="{{ asset_base_url ~ swatch_image.asset.file_path ~ '.' ~ swatch_image.asset.file_extension }}" class="swatch-image" alt="{{ property_value.name }}" />
+                                                {% endif %}
+                                            {% else %}
+                                                <div class="property-value">{{ property_value.name }}</div>
+                                            {% endif %}
+                                        </a>
+                                        {% endif %}
+                                        {% endfor %}
+                                        {% endfor %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="prod-purchase clearfix">
+                    <div class="actions-buy">
+
+                        <ul class="og-actions">
+                            <li><a class="og-like btn" href="{{ og_url }}">Like</a></li>
+                            <li><a class="og-want btn" href="{{ og_url }}">Want</a></li>
+                            <li><a class="og-need btn" href="{{ og_url }}">Need</a></li>
+                            <li><a class="og-own btn" href="{{ og_url }}">Own</a></li>
+                        </ul>
+
+                        <a href="#" class="btn add-product" data-cart-action="add-product">Add to Cart</a>
+
+                    </div>
+                    {# I think this is going away? <a href="{{ product.variant[0].link }}" class="button">Learn More</a> #}
+                </div>
+                <div class="prod-actions">
+                    <ul class="clearfix">
+                        <li>
+                            <div>
+                                <a class="share-link facebook-share invisitext" title="Share with Facebook" data-method="facebook" data-type="product" data-context-id="{{ collection.id }}" data-ref-id="{{ product.id }}">Share with Facebook</a>
+                                <a class="share-link twitter-share invisitext" title="Share with Twitter" data-method="twitter" data-type="product" data-context-id="{{ collection.id }}" data-ref-id="{{ product.id }}">Share with Twitter</a>
+                                {# The only way (without heavy de-engineering) to get twitter events - including twitter post callback - is to have twitter widgets parse the below a href on click #}
+                                <a id="twitterShare" href="//twitter.com/intent/tweet" class="hidden" onclick="return false;"></a>
+                                <a class="share-link pinterest-share invisitext" title="Share with Pinterest" data-method="pinterest" data-type="product" data-context-id="{{ collection.id }}" data-ref-id="{{ product.id }}">Pin It!</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="prod-actions">
+                    <ul class="clearfix">
+                        <li>
+                            <div>
+                                <fb:like layout="button_count" width="100px" show_faces="false"></fb:like>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        {% if product.content|length %}
+            <div class="content-blocks">
+                {% for content in product.content %}
+                    <div class="block">
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div id="get-social" class="prod-description-wrapper clear">
+            <h3>Facebook Comments</h3>
+            <div id="facebook-plugins">
+                {# include 'ref' parameter in order to track comments as referrals #}
+                <div class="fb-comments" data-href="{{ og_url }}" data-ref="{{ collection.slug }}" data-numposts="10"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-modal">
+        <h3><span class="item-count">1 item</span> added to your bag</h3>
+        <div class="item">
+            {% if primary_image.asset is not empty %}
+                <img src="{{ asset_base_url ~ primary_image.asset.file_path ~ '_s.' ~ primary_image.asset.file_extension }}" alt="{{ primary_image.asset.name }}" />
+            {% endif %}
+            <div class="info">
+                <h4>{{ product.name }}</h4>
+                <div class="pricing-wrapper">{% include "SIStoreBundle:Product:pricing.html.twig" with { 'collection': collection, 'product': product } %}</div>
+            </div>
+        </div>
+        <div class="clearfix actions">
+            <a href="#" rel="modal:close" class="btn btn-primary left modal-close">Continue Shopping</a>
+            <a href="{{ cart_uri }}" class="btn btn-primary right">Checkout</a>
+        </div>
+    </div>
+{% endblock %}
+
+{# Add collection/product analytics data #}
+{% block scripts %}
+    <script>
+        window.pageData = {
+            {# NOTE: collection slug is hard coded in index template for now #}
+            {#collection: '{{ collection.slug }}',#}
+            product: '{{ product.slug }}'
+        }
+    </script>
+    {{ parent() }}
+{% endblock %}

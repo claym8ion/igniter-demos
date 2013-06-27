@@ -1,0 +1,25 @@
+<li class="partial">
+  <ul class="product clearfix" data-ref-id="{{ item.id }}">
+    <li class="product-image">
+      <a href="{{ item.product_uri }}" title="view detailed info on {{ item.name }}">
+        {% if item.asset and item.asset.file_path %}
+        <img src="{{ asset_base_url }}{{ item.asset.file_path ~ '.' ~ item.asset.file_extension }}">
+        {% else %}
+        <img src="{{ asset('/images/not_found.png') }}">
+        {% endif %}
+      </a>
+    </li>
+    <li class="product-name">
+      <h3><a href="{{ item.product_uri }}" title="view detailed info on {{ item.name }}" class="alt-color">{{ item.name }}</a></h3>
+      <b>{{ item.variant }}</b><br/>
+      SKU: {{ item.sku }}<br/>
+      <a href="#" class="close" data-cart-action="remove-item" data-coremetrics="remove">remove</a>
+    </li>
+    <li class="product-price"><span class="mobile-title">Price:</span>$<span class="price">{{ item.price }}</span></li>
+    <li class="product-quantity control-group"><span class="mobile-title">Qty.</span>
+      <input type="text" name="quantity" value="{{ item.quantity }}" data-initial-value="{{ item.quantity }}">
+      <button class="btn btn-mini center disabled" data-cart-action="update-item">Update</button>
+    </li>
+    <li class="product-total"><span class="mobile-title">Subtotal:</span>$<span class="subtotal">{{ item.subtotal }}</span></li>
+  </ul>
+</li>

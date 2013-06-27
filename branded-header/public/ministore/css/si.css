@@ -1,0 +1,400 @@
+.scrollTrack{
+    color:#000000;
+}
+.scrollFace{
+    colorArray:#cccccc,#acacac;
+}
+.buttonGradient{
+    colorArray:#cccccc,#999999;
+}
+.storeBgGradient{
+    colorArray:#e7e7e7,#eeeeee;
+}
+.addedToCartGradient{
+    colorArray:#444444,#2a2a2a;
+}
+.addedToCartButtonGradient{
+    colorArray:#7b7b7c,#545557;
+}
+.addedToCartText{
+    font-family:Helvetica, Arial;
+    font-weight:bold;
+    font-size:10px;
+    color:#FFFFFF;
+    text-align:center;
+    leading:5px;
+}
+.soldOut{
+    font-family:Helvetica, Arial;
+    font-weight:bold;
+    font-size:14px;
+    color:#FFFFFF;
+}
+.continueButtonLabel{
+    font-family:Helvetica, Arial;
+    font-weight:bold;
+    font-size:10px;
+    color:#000000;
+    text-align:center;
+}
+.buyButtonGradient{
+    colorArray:#fcb16e,#ff7040;
+}
+
+.tabLabel{
+    font-family:Helvetica, Arial;
+    color:#777777;
+    font-size:10px;
+    text-align:center;
+    font-weight:bold;
+}
+
+/*button labels text*/
+.buttonLabel{
+    font-family:Helvetica, Arial;
+    color:#FFFFFF;
+    font-size:10px;
+    text-align:center;
+    font-weight:bold;
+}
+.buyButtonLabel{
+    font-family:Helvetica, Arial;
+    color:#a43f24;
+    font-size:14px;
+    text-align:center;
+    font-weight:bold;
+}
+.yesnoButtonLabel{
+    font-family:Helvetica, Arial;
+    color:#a43f24;
+    font-size:9px;
+    text-align:center;
+    font-weight:bold;
+}
+.headerButtonLabel{
+    font-family:Helvetica, Arial;
+    color:#777777;
+    font-size:9px;
+    font-weight:bold;
+    text-align:center;
+}
+/*
+.headerGradient{
+	colorArray:#666666,#dddddd;
+}
+*/
+.headerBorder{
+    color:#f2f2f2;
+}
+
+/*main display product details background and border colors */
+.productDetail{
+    background:#FFFFff;
+    border:#000000;
+}
+/*product details name color*/
+.productDetailsName{
+    color:#000000;
+}
+/*price color*/
+.priceColor{
+    font-size:16px;
+    color:#ff5900;
+}
+/*cart header background color*/
+.cartHeader{
+    background:#aaaaaa;
+
+}
+
+/*cart background color*/
+.cart{
+    background:#FFFFFF;
+}
+
+p {
+    font-family:Helvetica,Arial;
+    font-weight:bold;
+}
+.videoTime{
+    font-family:Arial,Helvetica;
+    font-size:6.7px;
+    color:#444444;
+    text-align:center;
+}
+/*header text for when there is a text vs image header*/
+.headerText{
+
+    color:#FFFFFF;
+    font-size:29px;
+}
+/*text for back button*/
+.backText{
+    font-family:Helvetica,Arial;
+    color:#000000;
+    font-size:9px;
+}
+
+.quantityButtonText{
+    color:#FFFFFF;
+    font-size:11px;
+    text-align:center;
+}
+/*footer label text, before the company url on the left*/
+.footerLinks{
+    font-size:9px;
+    font-family:Helvetica,Arial;
+    font-weight:normal;
+    color:#666666;
+}
+.footerLinksLink{
+    color:#ff6429;
+}
+
+.footerLabel{
+    font-size:11px;
+    color:#777777;
+}
+/*footer link text*/
+.footerLink{
+    font-family:Lucida Grande,Lucida Sans;
+    font-size:11px;
+    color:#000000;
+}
+
+
+.affirmationLabel{
+    font-size:9px;
+    color:#777777;
+    font-weight:normal;
+}
+
+/*main display product details header text just says "PRODUCT DETAILS"*/
+.headerLink{
+    font-family:Lucida Grande,Lucida Sans;
+    font-size:9px;
+    color:#ff6429;
+    font-weight:normal;
+}
+.productDetailsHeaderText{
+    font-family:Helvetica, Arial;
+    font-size:16px;
+    color:#444444;
+    font-weight:bold;
+}
+/*main display product details text*/
+.productDetailsText{
+    font-family:Helvetica, Arial;
+    font-size:12px;
+    color:#7777777;
+    font-weight:normal;
+    leading:3px;
+}
+/*product name text*/
+.productNameText{
+    font-family:Helvetica, Arial;
+    font-size:16px;
+    color:#444444;
+}
+/*remaining text setting*/
+.detailRemaining{
+    font-family:Helvetica, Arial;
+    font-size:11px;
+    color:#666666;
+    font-weight:normal;
+}
+/*acordian header font names*/
+.sectionHeader{
+    font-size:16px;
+    Font-family:Helvetica, Arial;
+    font-weight:bold;
+    color:#444444;
+}
+/*default form field text*/
+.formText{
+    font-family:Lucida Grande,Lucida Sans;
+    color:#777777;
+    font-size:11px;
+}
+/*header used in form blocks*/
+.formBlockHeader{
+    font-family:Helvetica, Arial;
+    font-size:11px;
+    color:#444444;
+}
+/*font settings for check box labels*/
+.checkLabel{
+    font-family:Lucida Grande,Lucida Sans;
+    font-size:11px;
+    color:#444444;
+}
+
+/*info summary blocks text settings, these are used for the address display on the summary screen*/
+.infoSection{
+    font-family:Helvetica, Arial;
+    font-size:10px;
+    color:#999999;
+    font-weight:bold;
+}
+/*header for info summary blocks*/
+.infoHeader{
+    font-family:Helvetica, Arial;
+    font-size:11px;
+    color:#444444;
+    font-weight:bold;
+
+}
+/*info summary block body*/
+.infoBody{
+    font-family:Helvetica, Arial;
+    font-size:12px;
+    color:#777777;
+    font-weight:normal;
+    leading:7px;
+}
+/*info sommary block edit button text formatting*/
+.infoEdit{
+    color:#639BAE;
+    font-family:Lucida Grande,Lucida Sans;
+    font-size:11px;
+    font-style:italic;
+}
+/*this is the column header text in the cart display*/
+.cartTableHeader{
+    color:#444444;
+    font-family:Helvetica,Arial;
+    font-weight:bold;
+    font-size:11px;
+}
+/*this is the font for the cart items*/
+.cartTableItem{
+    color:#444444;
+    font-family:Helvetica,Arial;
+    font-size:11px;
+    font-weight:normal;
+}
+/*this is the cart price*/
+.cartTablePrice{
+    color:#444444;
+    font-family:Helvetica,Arial;
+    font-size:11px;
+    font-weight:normal;
+    text-align:right;
+}
+/*this is the cart display total*/
+.cartTableTotal{
+    color:#444444;
+    font-family:Helvetica,Arial;
+    font-size:11px;
+    font-weight:bold;
+    text-align:right;
+}
+
+/*verify city / state font*/
+.verifyText{
+    font-family:Lucida Grande,Lucida Sans;
+    font-weight:normal;
+    font-size:10px;
+    color:#fa4827;
+}
+/*confirm screen "charge credit card text*/
+.ccText{
+    font-family:Lucida Grande,Lucida Sans;
+    font-weight:normal;
+    font-size:10px;
+    color:#999999;
+}
+/*text for cvc help display*/
+.cvcText{
+    font-family:Helvetica,Arial;
+    font-weight:bold;
+    font-size:10px;
+    color:#444444;
+
+}
+/*error font*/
+.submitError{
+    font-family:Helvetica,Arial;
+    font-weight:bold;
+    font-size:10px;
+    color:#000000;
+}
+/*zip form block header*/
+.zipHead{
+    font-family:Lucida Grande,Lucida Sans;
+    font-size:10px;
+    color:#444444;
+    font-weight:bold;
+}
+/*zip form text*/
+.zip{
+    font-family:Lucida Grande,Lucida Sans;
+    font-size:11px;
+    color:#444444;
+    font-weight:normal;
+    text-align:left;
+}
+/*zip correct link text*/
+.correctLink{
+    font-size:10px;
+    color:#444444;
+    text-align:left;
+    font-weight:normal;
+}
+
+.shippingMethodInstructions{
+    font-family:Lucida Grande,Lucida Sans;
+    font-size:10px;
+    color:#888888;
+    font-weight:normal;
+}
+
+/*thank you text on finish screen*/
+.thanksText{
+    font-size:16px;
+    color:#999999;
+}
+.thanksMessage{
+    font-size:12px;
+    color:#444444;
+    font-family:Helvetica,Arial;
+    font-weight:bold;
+}
+/*error balloon text settings */
+.errorBalloon{
+    font-size:11px;
+    color:#855e18;
+    text-align:center;
+    leading:3px
+}
+/*close button for drop down drawers in header text*/
+.closeBt{
+    font-family:Helvetica,Arial;
+    font-size:10px;
+    color:#cccccc;
+    text-align:left;
+}
+.close{
+    font-family:Helvetica,Arial;
+    font-size:10px;
+    color:#7f7f7f;
+    text-align:left;
+    font-weight:normal;
+}
+/*cvc popup header*/
+.cvcHead{
+    font-family:Helvetica,Arial;
+    font-size:10px;
+    color:#444444;
+    text-align:left;
+    font-wight:bold;
+}
+/*cvc popup body*/
+.cvcBody{
+    font-family:Helvetica,Arial;
+    font-size:10px;
+    color:#444444;
+    text-align:left;
+    font-weight:normal;
+    leading:3px
+}

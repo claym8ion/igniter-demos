@@ -1,0 +1,25 @@
+{# price display logic for initial, on-load display only; JS handles it after that #}
+{% set first_variant = product.variant|first %}
+{% set min_reg_price = product.variant|min('price',2).price %}
+{% set min_sale_price = product.variant|min('sale_price',2).sale_price %}
+{% set max_reg_price = product.variant|max('price',2).price %}
+{% set max_sale_price = product.variant|max('sale_price',2).sale_price %}
+{% set min_price = min_sale_price < min_reg_price ? min_sale_price : min_reg_price %}
+{% set max_price = max_sale_price > max_reg_price ? max_sale_price : max_reg_price %}
+
+<span class="pricing">
+    {% if min_price != max_price %}
+    	{% if min_sale_price != min_reg_price %}
+		    <s><span class="retail-price">$<span class="prod-price" data-price="{{ min_reg_price }} - ${{ max_reg_price }}">{{ min_reg_price }} - ${{ max_reg_price }}</span></span></s>
+		    <span class="sale-price">$<span class="prod-sale-price" data-price="{{ min_sale_price }} - ${{ max_sale_price }}">{{ min_sale_price }} - ${{ max_sale_price }}</span></span>
+		  {% else %}
+		  	<span class="retail-price">$<span class="prod-price" data-price="{{ min_reg_price }} - ${{ max_reg_price }}">{{ min_reg_price }} - ${{ max_reg_price }}</span></span>
+		  {% endif %}
+    {% elseif first_variant.price == first_variant.sale_price %}
+    <span class="retail-price">$<span class="prod-price" data-price="{{ first_variant.price }}">{{ first_variant.price }}</span></span>
+    <span class="sale-price"><span class="prod-sale-price"></span></span>
+    {% else %}
+    <span class="retail-price on-sale">$<span class="prod-price" data-price="{{ first_variant.price }}">{{ first_variant.price }}</span></span>
+    <span class="sale-price"><span class="prod-sale-price" data-sale-price="{{ first_variant.sale_price }}">{{ first_variant.sale_price }}</span></span>
+    {% endif %}
+</span>

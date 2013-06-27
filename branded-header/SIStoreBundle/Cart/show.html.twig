@@ -1,0 +1,51 @@
+{% extends 'SIStoreBundle::index.html.twig' %}
+{% set last_route = app.session.get('last_route') %}
+{% set home_url = path('landing_page') %}
+
+{% block minicart %}
+{# on the cart page, we don't need a mini cart #}
+{% endblock %}
+
+{% block content %}
+
+{# make sure to pass last_route data through path() in order to construct dev urls 
+<a href="{{ path(last_route.name, last_route.params) }}" class="back">&lt; Continue Shopping</a> #}
+<a href="{{ home_url }}" class="back">&lt; Continue Shopping</a>
+<div id="shopping-cart">
+  <h2>Your Cart</h2>
+  <div class="clearfix grid-row list-view cart">
+  {% if cart.id is defined and cart.items|length> 0 %}
+    <div class="hide">Basket: {{ cart.id }}</div>
+    	  <ul class="vertical-list">
+	  	<li class="partial">
+		  <ul class="product clearfix cart-titles">
+		    <li class="product-image">
+		      	<h3>Image</h3>
+		    </li>
+		    <li class="product-name">
+		        <h3>Product info</h3>
+		    </li>
+		    <li class="product-price">
+		    	<h3>Price</h3>
+		    </li>
+		    <li class="product-quantity control-group">
+		      	<h3>Qty.</h3>
+		    </li>
+		    <li class="product-total">
+		    	<h3>Total</h3>
+		    </li>
+		  </ul>
+		</li>
+	    {% for item in cart.items %}
+	        {% include "SIStoreBundle:Cart:item.html.twig" with { 'item': item } %}
+	    {% endfor %}
+	  </ul>
+    <div class="total clearfix"><span class="right"><span class="cart-total">Total: ${{ cart.total }}</span></span></div>
+    <div class="checkout right"><a href="" class="btn btn-primary right">Proceed to Checkout</a></div>
+  {% else %}
+    <div>Your cart is empty</div>
+  {% endif %}
+  </div>
+</div>
+
+{% endblock %}

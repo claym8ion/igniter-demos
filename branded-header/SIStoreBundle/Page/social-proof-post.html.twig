@@ -1,0 +1,91 @@
+{% extends 'SIStoreBundle::index.html.twig' %}
+
+{% set og_url = generate_og_url(collection) %}
+{% set component = page.component %}
+
+{% block title %}{{ parent() }} - {{ page.name }}{% endblock %}
+
+{% block header %}
+    <div class="clearfix">
+        {% if component.out_link is defined %}
+            <a href="{{ component.out_link.url }}" target="_blank" class="dotcom">{{ component.out_link.name }}</a>
+        {% endif %}
+    </div>
+
+    <header class="clearfix">
+        <h1>{{ page.name }}</a></h1>
+    </header>
+{% endblock %}
+
+{% block meta %}
+    {{ parent() }}
+
+    <meta property="og:title" content="{{ page.og_title }}" />
+    <meta property="og:url" content="{{ og_url }}" />
+
+    {% if page.og_image_asset is defined %}
+        <meta property="og:image" content="{{ (asset_base_url ~ page.og_image_asset.file_path ~ '_m.' ~ page.og_image_asset.file_extension)|ensure_protocol }}" />
+    {% endif %}
+
+    {% if page.og_description %}
+        <meta property="og:description" content="{{ page.og_description }}" />
+    {% endif %}
+
+    {% if instream.swf_url %}
+    <meta property="og:video" content="{{ instream.swf_url|ensure_protocol }}" />
+    {% endif %}
+    <meta property="og:video:secure_url" content="{{ instream.swf_url|ensure_protocol('https') }}" />
+    {% if instream.video_width %}
+        <meta property="og:video:width" content="{{ instream.video_width }}" />
+    {% endif %}
+    {% if instream.video_height %}
+        <meta property="og:video:height" content="{{ instream.video_height }}" />
+    {% endif %}
+    {% if instream.video_type %}
+        <meta property="og:video:type" content="{{ instream.video_type }}" />
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    <div id="collection-container">
+        {# VIDEO #}
+        {% if component.video is defined %}
+            {% set asset = component.video.asset %}
+            <div class="embed-container">
+                <iframe data-video="{{ asset.url }}" src="" width="640" height="360" frameborder="0"
+                        webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+            </div>
+        {% endif %}
+
+        {# CAMPAIGN TEXT #}
+        {% if component.campaign_text is defined %}
+            <p class="campaign-text">
+                {{ component.campaign_text.contentblock.content|raw }}
+            </p>
+        {% endif %}
+    </div>
+
+    {# LIVE INSTAGRAM FEED #}
+    {% if component.hashtag is defined %}
+    {% set hashtag = component.hashtag.hashtag|trim('#') %}
+        {% if hashtag is not empty %}
+        <div id="collection-show">
+            {% if component.show_feed_label is defined %}
+            <button class="btn">{{ component.show_feed_label.contentblock.content }}</button>
+            {% endif %}
+        </div>
+
+        <div id="alternate-mini-product-container" class="slider">
+            <div class="product-close">Close</div>
+            <div class="instagram clearfix" data-hashtag="{{ component.hashtag.hashtag|trim('#') }}"></div>
+            <button class="more">More</button>
+        </div>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
+
+{% block footer %}
+    <div class="overlay"></div>
+{% endblock %}

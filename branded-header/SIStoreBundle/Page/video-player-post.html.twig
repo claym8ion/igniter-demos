@@ -1,0 +1,131 @@
+{% extends 'SIStoreBundle::index.html.twig' %}
+
+{% set og_url = generate_og_url(collection) %}
+{% set component = page.component %}
+
+{% block title %}{{ parent() }} - {{ page.name }}{% endblock %}
+
+{% block header %}
+    <div class="clearfix">
+        {% if component.out_link is defined %}
+            <a href="{{ component.out_link.url }}" target="_blank" class="dotcom">{{ component.out_link.name }}</a>
+        {% endif %}
+    </div>
+
+    <header class="clearfix">
+        <h1>{{ page.name }}</a></h1>
+    </header>
+{% endblock %}
+
+{% block meta %}
+    {{ parent() }}
+
+    <meta property="og:title" content="{{ page.og_title }}" />
+    <meta property="og:url" content="{{ og_url }}" />
+
+    {% if page.og_image_asset is defined %}
+        <meta property="og:image" content="{{ (asset_base_url ~ page.og_image_asset.file_path ~ '_m.' ~ page.og_image_asset.file_extension)|ensure_protocol }}" />
+    {% endif %}
+
+    {% if page.og_description %}
+        <meta property="og:description" content="{{ page.og_description }}" />
+    {% endif %}
+
+    <meta property="og:video" content="{{ instream.swf_url|ensure_protocol }}" />
+    <meta property="og:video:secure_url" content="{{ instream.swf_url|ensure_protocol('https') }}" />
+    {% if instream.video_width %}
+        <meta property="og:video:width" content="{{ instream.video_width }}" />
+    {% endif %}
+    {% if instream.video_height %}
+        <meta property="og:video:height" content="{{ instream.video_height }}" />
+    {% endif %}
+    {% if instream.video_type %}
+        <meta property="og:video:type" content="{{ instream.video_type }}" />
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    {# Use flexslider plugin if more than 1 slide exists #}
+    {% set slides = [] %}
+    {% for slug, slide in component if slug in ['first_video', 'second_video', 'third_video'] %}
+        {% set slides = slides|merge([slide]) %}
+    {% endfor %}
+
+    {% if slides|length > 1 %}
+        {# 3 VIDEOS  #}
+
+        <div class="flexslider">
+
+            <ul class="slides">
+                {% if component.first_video is defined %}
+                    <li class="video">
+                        <div class="embed-container">
+                            <iframe src="" width="640" height="360" frameborder="0"
+                                    webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                        </div>
+                    </li>
+                {% endif %}
+
+                {% if component.second_video is defined %}
+                    <li class="video">
+                        <div class="embed-container">
+                            <iframe src="" width="640" height="360" frameborder="0"
+                                    webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                        </div>
+                    </li>
+                {% endif %}
+
+                {% if component.third_video is defined %}
+                    <li class="video">
+                        <div class="embed-container">
+                            <iframe src="" width="640" height="360" frameborder="0"
+                                    webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                        </div>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="flexslider-nav">
+            <ul id="thumbnails" class="clearfix">
+
+                {% if component.first_video is defined %}
+                    {% set asset = component.first_video.asset %}
+                    <li class="thumb1 video" ><a href="#" data-video="{{ asset.url }}"><img src="" alt="{{ asset.name }}"></a></li>
+                {% endif %}
+
+                {% if component.second_video is defined %}
+                    {% set asset = component.second_video.asset %}
+                    <li class="thumb2 video" ><a href="#" data-video="{{ asset.url }}"><img src="" alt="{{ asset.name }}"></a></li>
+                {% endif %}
+
+                {% if component.third_video is defined %}
+                    {% set asset = component.third_video.asset %}
+                    <li class="thumb3 video" ><a href="#" data-video="{{ asset.url }}"><img src="" alt="{{ asset.name }}"></a></li>
+                {% endif %}
+            </ul>
+        </div>
+    {% elseif slides|length == 1 %}
+        {% set asset = slides|first.asset %}
+        <div class="embed-container">
+            <iframe data-video="{{ asset.url }}" src="" width="640" height="360" frameborder="0"
+                    webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block footer %}
+
+    <footer>
+        <nav>
+            <ul>
+                {% if component.action_link is defined %}
+                    <li><a href="{{ component.action_link.url }}" target="_blank">{{ component.action_link.name }}</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </footer>
+
+    <div class="overlay"></div>
+{% endblock %}
